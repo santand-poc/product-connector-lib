@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: checklist
+  datasource:
+    url: jdbc:postgresql://localhost:5432/product_connector_db
+    username: product_connector_user
+    password: product_connector_password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+rabbitmq:
+  queue: application-checklist
+
+spring.rabbitmq:
+  host: localhost
+  port: 5672
+  username: guest
+  password: guest
+
+server:
+  port: 8085

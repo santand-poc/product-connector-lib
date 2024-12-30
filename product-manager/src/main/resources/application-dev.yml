@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/product_manager_db
+    username: product_manager_user
+    password: product_manager_password
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+  liquibase:
+    enabled: true
+
+logging:
+  level:
+    org.springframework: INFO
+    org.hibernate: INFO
+
+server:
+  port: 8080

@@ -1,0 +1,91 @@
+# Ignore Maven target directories
+**/target/
+
+# Ignore IntelliJ IDEA files
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Ignore Eclipse files
+.project
+.classpath
+.settings/
+
+# Ignore VSCode files
+.vscode/
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore log files
+**/logs/
+**/*.log
+
+# Ignore temporary files
+**/*.swp
+*.temp
+*.tmp
+*.bak
+*.backup
+*.orig
+*.rej
+*~
+
+# Ignore application-specific files
+**/*.db
+**/*.sqlite
+**/*.h2.db
+
+# Ignore build artifacts
+**/build/
+!**/src/**/build/
+
+# Ignore Liquibase changelogs backups
+db/changelog/*-backup.yaml
+db/changelog/*-backup.sql
+
+# Ignore Docker files
+docker-compose.override.yml
+**/.docker/
+
+# Ignore compiled files
+**/*.class
+**/*.jar
+**/*.war
+
+# Ignore dependency directories
+**/node_modules/
+**/vendor/
+
+# Ignore generated configuration files
+**/.env
+**/*.config
+**/*.properties
+local-*.properties
+
+# Ignore IDE-specific settings in submodules
+product-manager/.idea/
+product-connector/.idea/
+checklist/.idea/
+
+# Ignore build results in submodules
+product-manager/target/
+product-connector/target/
+checklist/target/
+
+# Ignore Docker generated files in submodules
+product-manager/.docker/
+product-connector/.docker/
+checklist/.docker/
+
+# Ignore temporary files and backup files
+**/tmp/
+**/bak/
+*.swp
+
+# Ignore runtime-generated files
+**/.session/
+**/logs/

@@ -1,0 +1,128 @@
+version: "3.8"
+
+services:
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: master_user
+      POSTGRES_PASSWORD: master_password
+      POSTGRES_DB: shared_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts-init:/docker-entrypoint-initdb.d
+
+  product-manager:
+    build:
+      context: ./product-manager
+      dockerfile: Dockerfile
+    container_name: event-publisher
+    environment:
+      # DATA_BASE
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/product_manager_db
+      SPRING_DATASOURCE_USERNAME: product_manager_user
+      SPRING_DATASOURCE_PASSWORD: product_manager_password
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL-AUTO: validate
+      SPRING_LIQUIBASE_ENABLED: true
+      # RABBIT_MQ
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - rabbitmq
+      - postgres
+
+  checklist-1:
+    build:
+      context: ./checklist
+      dockerfile: Dockerfile
+    container_name: checklist-1
+    environment:
+      # DATA_BASE
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/product_connector_db
+      SPRING_DATASOURCE_USERNAME: product_connector_user
+      SPRING_DATASOURCE_PASSWORD: product_connector_password
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL-AUTO: validate
+      SPRING_LIQUIBASE_ENABLED: true
+      # RABBIT_MQ
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    ports:
+      - "8081:8081"
+    depends_on:
+      - rabbitmq
+      - postgres
+
+  checklist-2:
+    build:
+      context: ./checklist
+      dockerfile: Dockerfile
+    container_name: checklist-2
+    environment:
+      # DATA_BASE
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/product_connector_db
+      SPRING_DATASOURCE_USERNAME: product_connector_user
+      SPRING_DATASOURCE_PASSWORD: product_connector_password
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL-AUTO: validate
+      SPRING_LIQUIBASE_ENABLED: true
+      # RABBIT_MQ
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    ports:
+      - "8082:8081"
+    depends_on:
+      - rabbitmq
+      - postgres
+
+  checklist-3:
+    build:
+      context: ./checklist
+      dockerfile: Dockerfile
+    container_name: checklist-3
+    environment:
+      # DATA_BASE
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/product_connector_db
+      SPRING_DATASOURCE_USERNAME: product_connector_user
+      SPRING_DATASOURCE_PASSWORD: product_connector_password
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL-AUTO: validate
+      SPRING_LIQUIBASE_ENABLED: true
+      # RABBIT_MQ
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    ports:
+      - "8083:8081"
+    depends_on:
+      - rabbitmq
+      - postgres
+
+volumes:
+  postgres_data:

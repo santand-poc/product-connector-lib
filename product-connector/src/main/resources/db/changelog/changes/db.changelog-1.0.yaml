@@ -1,0 +1,58 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: user
+      changes:
+        - createTable:
+            tableName: product
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: case_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: owner
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: json
+                  type: VARCHAR
+                  constraints:
+                    nullable: false
+        - createIndex:
+            tableName: product
+            columns:
+              - column:
+                  name: type
+            indexName: idx_product_type
+        - createIndex:
+            tableName: product
+            columns:
+              - column:
+                  name: case_id
+            indexName: idx_product_case_id
+        - createIndex:
+            tableName: product
+            columns:
+              - column:
+                  name: owner
+            indexName: idx_product_owner
+        - createIndex:
+            tableName: product
+            columns:
+              - column:
+                  name: id
+            indexName: idx_product_id
