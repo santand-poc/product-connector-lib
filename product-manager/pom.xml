@@ -8,7 +8,7 @@
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>ProductEventEmitter</name>
+    <name>product-manager</name>
     <description>Application to emit product state change events</description>
 
     <parent>

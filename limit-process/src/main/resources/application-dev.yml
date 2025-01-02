@@ -1,10 +1,10 @@
 spring:
   application:
-    name: checklist
+    name: limit_process
   datasource:
-    url: jdbc:postgresql://localhost:5432/checklist_db
-    username: checklist_user
-    password: checklist_password
+    url: jdbc:postgresql://localhost:5432/limit_process_db
+    username: limit_process_user
+    password: limit_process_password
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -14,7 +14,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
 rabbitmq:
-  queue: application-checklist
+  queue: application-limit-process
 
 spring.rabbitmq:
   host: localhost

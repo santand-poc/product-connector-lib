@@ -28,7 +28,7 @@ services:
     build:
       context: ./product-manager
       dockerfile: Dockerfile
-    container_name: event-publisher
+    container_name: product-manager
     environment:
       # DATA_BASE
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/product_manager_db
@@ -56,9 +56,9 @@ services:
     container_name: checklist-1
     environment:
       # DATA_BASE
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/product_connector_db
-      SPRING_DATASOURCE_USERNAME: product_connector_user
-      SPRING_DATASOURCE_PASSWORD: product_connector_password
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/checklist_db
+      SPRING_DATASOURCE_USERNAME: checklist_user
+      SPRING_DATASOURCE_PASSWORD: checklist_password
       SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
       SPRING_JPA_HIBERNATE_DDL-AUTO: validate
@@ -81,9 +81,9 @@ services:
     container_name: checklist-2
     environment:
       # DATA_BASE
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/product_connector_db
-      SPRING_DATASOURCE_USERNAME: product_connector_user
-      SPRING_DATASOURCE_PASSWORD: product_connector_password
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/checklist_db
+      SPRING_DATASOURCE_USERNAME: checklist_user
+      SPRING_DATASOURCE_PASSWORD: checklist_password
       SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
       SPRING_JPA_HIBERNATE_DDL-AUTO: validate
@@ -106,9 +106,9 @@ services:
     container_name: checklist-3
     environment:
       # DATA_BASE
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/product_connector_db
-      SPRING_DATASOURCE_USERNAME: product_connector_user
-      SPRING_DATASOURCE_PASSWORD: product_connector_password
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/checklist_db
+      SPRING_DATASOURCE_USERNAME: checklist_user
+      SPRING_DATASOURCE_PASSWORD: checklist_password
       SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
       SPRING_JPA_HIBERNATE_DDL-AUTO: validate
@@ -120,6 +120,56 @@ services:
       SPRING_RABBITMQ_PASSWORD: guest
     ports:
       - "8083:8081"
+    depends_on:
+      - rabbitmq
+      - postgres
+
+  limit-process-1:
+    build:
+      context: ./limit-process
+      dockerfile: Dockerfile
+    container_name: limit-process-1
+    environment:
+      # DATA_BASE
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/limit_process_db
+      SPRING_DATASOURCE_USERNAME: limit_process_user
+      SPRING_DATASOURCE_PASSWORD: limit_process_password
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL-AUTO: validate
+      SPRING_LIQUIBASE_ENABLED: true
+      # RABBIT_MQ
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    ports:
+      - "8084:8081"
+    depends_on:
+      - rabbitmq
+      - postgres
+
+  limit-process-2:
+    build:
+      context: ./limit-process
+      dockerfile: Dockerfile
+    container_name: limit-process-2
+    environment:
+      # DATA_BASE
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/limit_process_db
+      SPRING_DATASOURCE_USERNAME: limit_process_user
+      SPRING_DATASOURCE_PASSWORD: limit_process_password
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: org.postgresql.Driver
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_JPA_HIBERNATE_DDL-AUTO: validate
+      SPRING_LIQUIBASE_ENABLED: true
+      # RABBIT_MQ
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    ports:
+      - "8085:8081"
     depends_on:
       - rabbitmq
       - postgres

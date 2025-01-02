@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: limit-process
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+rabbitmq:
+  queue: application-limit-process
+  custom-leader-election: false
+  single-active-consumer: true
+
+spring.rabbitmq:
+  host: localhost
+  port: 5672
+  username: guest
+  password: guest
+
+server:
+  port: 8081

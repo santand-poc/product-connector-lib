@@ -31,19 +31,17 @@ class RabbitMQListener {
     private static final int MAX_DLQ_RETRIES = 5;
 
 
-    @RabbitListener(queues = "#{productQueueName}", containerFactory = "productListenerContainerFactory")
+    @RabbitListener(
+            id = "#{productQueueListenerName}",
+            queues = "#{productQueueName}",
+            containerFactory = "productListenerContainerFactory"
+    )
     @SneakyThrows
     @Transactional
     public void onMessage(ProductDto message, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) {
-        if (!leaderElectionService.isCurrentInstanceLeader(AsyncProductMessageReaderLeaderTask.TASK_ID)) {
-            System.out.println("Instance is NOT leader. Skipping message: " + message);
-            channel.basicReject(deliveryTag, true);
-            return;
-        }
-
         if (caseStatusService.isCasePaused(message.getCaseId())) {
             System.out.println("Case " + message.getCaseId() + " is paused. Skipping message.");
-            channel.basicReject(deliveryTag, true);
+            channel.basicReject(deliveryTag, false);
             return;
         }
 

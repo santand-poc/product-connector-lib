@@ -13,6 +13,7 @@
         <module>product-manager</module>
         <module>product-connector</module>
         <module>checklist</module>
+        <module>limit-process</module>
     </modules>
 
     <properties>

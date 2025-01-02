@@ -5,13 +5,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mknieszner.productconnector.common.ProductDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 class Product {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    private Long productId;
 
     @Column(nullable = false)
     private String type;
@@ -27,12 +33,17 @@ class Product {
 
     public static Product from(ProductDto source) {
         Product product = new Product();
-        product.id = source.getId();
+        product.productId = source.getId();
         product.caseId = source.getCaseId();
         product.owner = source.getOwner();
         product.type = source.getType();
         product.json = convertToJson(source);
         return product;
+    }
+
+    public Product update(ProductDto source) {
+        json = convertToJson(source);
+        return this;
     }
 
     public ProductDto getValue() {

@@ -21,6 +21,8 @@ import java.util.Arrays;
 public class RabbitMQAutoConfiguration {
     @Value("${rabbitmq.exchange:product-events-fanout}")
     private String exchangeName;
+    @Value("${rabbitmq.single-active-consumer:false}")
+    private boolean singleActiveConsumer;
     @Value("${rabbitmq.queue}")
     private String queueName;
 
@@ -32,10 +34,14 @@ public class RabbitMQAutoConfiguration {
 
     @Bean
     public Queue productQueue() {
-        return QueueBuilder.durable(productQueueName())
-                .withArgument("x-dead-letter-exchange", dlxExchangeName())
-//                .withArgument("x-message-ttl", 10_000)
-                .build();
+        QueueBuilder queueBuilder = QueueBuilder.durable(productQueueName())
+                .withArgument("x-dead-letter-exchange", dlxExchangeName());
+
+        if (singleActiveConsumer) {
+            queueBuilder.withArgument("x-single-active-consumer", singleActiveConsumer);
+        }
+
+        return queueBuilder.build();
     }
 
     @Bean
@@ -51,7 +57,13 @@ public class RabbitMQAutoConfiguration {
 
     @Bean
     public Queue dlqQueue() {
-        return QueueBuilder.durable(dlqProductQueueName()).build();
+        QueueBuilder queueBuilder = QueueBuilder.durable(dlqProductQueueName());
+
+        if (singleActiveConsumer) {
+            queueBuilder.withArgument("x-single-active-consumer", singleActiveConsumer);
+        }
+
+        return queueBuilder.build();
     }
 
     @Bean
@@ -98,5 +110,10 @@ public class RabbitMQAutoConfiguration {
     @Bean
     public String productQueueName() {
         return queueName;
+    }
+
+    @Bean
+    public String productQueueListenerName() {
+        return "productQueueListener";
     }
 }
